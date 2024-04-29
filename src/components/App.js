@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 const relations = ["Siblings", "Friends", "Love", "Affection", "Marriage", "Enemy"]
 function findRelation(name1, name2) {
     // calculate frequency for name1 
@@ -31,9 +31,7 @@ const App = () => {
       fontSize: '16px',
     },
   };
-    // 2 inputs 
-    // 2 buttons 
-    // 1 result text
+   
 
     const [name1, setName1] = useState('');
     const [name2, setName2] = useState('');
@@ -64,4 +62,5 @@ const App = () => {
 }
 
 
-export default App;
+export default App; 
+
