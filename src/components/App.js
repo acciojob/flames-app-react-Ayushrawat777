@@ -1,66 +1,94 @@
- import React, { useState } from "react";
-const relations = ["Siblings", "Friends", "Love", "Affection", "Marriage", "Enemy"]
+import React, { useState } from "react";
+const relations = [
+  "Friends",
+  "Love",
+  "Affection",
+  "Marriage",
+  "Enemy",
+  "Siblings",
+];
 function findRelation(name1, name2) {
-    // calculate frequency for name1 
-    let map = {};
-    let n = name1.length, m = name2.length;
-    for (let i = 0; i < n; i++) {
-        let char = name1[i];
-        if (map[char]) {
-            map[char]++;
-        }
-        else map[char] = 1;
-    }
+  
+  let map = {};
+  let n = name1.length,
+    m = name2.length;
+  for (let i = 0; i < n; i++) {
+    let char = name1[i];
+    if (map[char]) {
+      map[char]++;
+    } else map[char] = 1;
+  }
 
-    let common = 0;
-    for (let i = 0; i < m; i++) {
-        let char = name2[i];
-        if (map[char]) {
-            map[char]--;
-            common++;
-        }
+  let common = 0;
+  for (let i = 0; i < m; i++) {
+    let char = name2[i];
+    if (map[char]) {
+      map[char]--;
+      common++;
     }
-    return relations[(n + m - 2 * common) % 6]
+  }
+  if (name1 == ''&& name2=='') {
+    return "Please Enter valid input"
+    }else{
+        
+        return relations[(n + m - 2 * common) % 6];
+    }
 }
 
 const App = () => {
   const styles = {
-   
     text: {
-      color: 'rgb(116,192,225)',
-      fontSize: '16px',
+      color: "rgb(116,192,225)",
+      fontSize: "16px",
     },
   };
-   
 
-    const [name1, setName1] = useState('');
-    const [name2, setName2] = useState('');
-    const [relation, setRelation] = useState('');
+  const [name1, setName1] = useState("");
+  const [name2, setName2] = useState("");
+  const [relation, setRelation] = useState("");
 
-    const calculate = () => {
-        setRelation(findRelation(name1, name2))
-    }
-    const clear = () => {
-        setName1('');
-        setName2('');
-        setRelation('')
-    }
+  const calculate = () => {
+    
+        setRelation(findRelation(name1, name2));
 
-    return (
-        <div style={{ margin: 70 }} id="main">
-            <input value={name1} onChange={(e) => setName1(e.target.value)}placeholder="Enter first name"  data-testid="input1"/>
+  };
+  const clear = () => {
+    setName1("");
+    setName2("");
+    setRelation("");
+  };
 
-            <input value={name2}onChange={(e) => setName2(e.target.value)}placeholder="Enter second name"data-testid="input2"/>
+  return (
+    <div style={{ margin: 70 }} id="main">
+      <input
+        value={name1}
+        onChange={(e) => setName1(e.target.value)}
+        placeholder="Enter first name"
+        data-testid="input1"
+      />
 
-            <button data-testid="calculate_relationship"style={styles.text} onClick={calculate}>Calculate Relationshuip Future</button>
+      <input
+        value={name2}
+        onChange={(e) => setName2(e.target.value)}
+        placeholder="Enter second name"
+        data-testid="input2"
+      />
 
-            <button style={styles.text} onClick={clear} data-testid="clear">Clear</button>
+      <button
+        data-testid="calculate_relationship"
+        style={styles.text}
+        onClick={calculate}
+      >
+        Calculate Relationshuip Future
+      </button>
 
-            {relation && <h3 data-testid="answer">{relation}</h3>}
-        </div>
-    );
-}
+      <button style={styles.text} onClick={clear} data-testid="clear">
+        Clear
+      </button>
 
+      {relation && <h3 data-testid="answer">{relation}</h3>}
+    </div>
+  );
+};
 
-export default App; 
-
+export default App;
