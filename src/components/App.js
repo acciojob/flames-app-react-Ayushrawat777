@@ -1,94 +1,70 @@
 import React, { useState } from "react";
-const relations = [
-  "Friends",
-  "Love",
-  "Affection",
-  "Marriage",
-  "Enemy",
-  "Siblings",
-];
-function findRelation(name1, name2) {
-  
-  let map = {};
-  let n = name1.length,
-    m = name2.length;
-  for (let i = 0; i < n; i++) {
-    let char = name1[i];
-    if (map[char]) {
-      map[char]++;
-    } else map[char] = 1;
-  }
+import "../styles/App.css"
 
-  let common = 0;
-  for (let i = 0; i < m; i++) {
-    let char = name2[i];
-    if (map[char]) {
-      map[char]--;
-      common++;
-    }
-  }
-  if (name1 == ''&& name2=='') {
-    return "Please Enter valid input"
-    }else{
-        
-        return relations[(n + m - 2 * common) % 6];
-    }
-}
-
-const App = () => {
-  const styles = {
-    text: {
-      color: "rgb(116,192,225)",
-      fontSize: "16px",
-    },
-  };
-
+const FlamesCalculator = () => {
   const [name1, setName1] = useState("");
   const [name2, setName2] = useState("");
-  const [relation, setRelation] = useState("");
+  const [result, setResult] = useState("");
 
-  const calculate = () => {
-    
-        setRelation(findRelation(name1, name2));
+  const relationshipStatus = ["Siblings", "Friends", "Love", "Affection", "Marriage", "Enemy"];
 
+  const calculateRelationship = () => {
+    if (!name1.trim() || !name2.trim()) {
+      setResult("Please Enter valid input");
+      return;
+    }
+
+    let nameArr1 = name1.split("");
+    let nameArr2 = name2.split("");
+
+    for (let char of [...name1]) {
+      let index = nameArr2.indexOf(char);
+      if (index !== -1) {
+        nameArr1.splice(nameArr1.indexOf(char), 1);
+        nameArr2.splice(index, 1);
+      }
+    }
+
+    let remainingLength = nameArr1.length + nameArr2.length;
+    setResult(relationshipStatus[remainingLength % 6]);
   };
-  const clear = () => {
+
+  const clearFields = () => {
     setName1("");
     setName2("");
-    setRelation("");
+    setResult("");
   };
 
   return (
-    <div style={{ margin: 70 }} id="main">
+    <div className="container">
       <input
+        data-testid="input1"
+        name="name1"
+        type="text"
         value={name1}
         onChange={(e) => setName1(e.target.value)}
         placeholder="Enter first name"
-        data-testid="input1"
+        className="input-field"
       />
-
       <input
+        data-testid="input2"
+        name="name2"
+        type="text"
         value={name2}
         onChange={(e) => setName2(e.target.value)}
         placeholder="Enter second name"
-        data-testid="input2"
+        className="input-field"
       />
-
-      <button
-        data-testid="calculate_relationship"
-        style={styles.text}
-        onClick={calculate}
-      >
-        Calculate Relationshuip Future
+      <button className="btn" data-testid="calculate_relationship"
+       name="calculate_relationship" onClick={calculateRelationship}>
+        Calculate Relationship Future
       </button>
-
-      <button style={styles.text} onClick={clear} data-testid="clear">
+      <button className="btn" data-testid="clear" name="clear" onClick={clearFields}>
         Clear
       </button>
-
-      {relation && <h3 data-testid="answer">{relation}</h3>}
+      <h3 data-testid="answer">{result}</h3>
     </div>
   );
 };
 
-export default App;
+export default FlamesCalculator;
